@@ -1,7 +1,17 @@
-import { Controller, Get, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Body,
+  Patch,
+  Post,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { SignalsService } from './signals.service';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-
+import { CreateSignalDto } from './dto/create-signal.dto';
+import { UpdateSignalDto } from './dto/update-signal.dto';
+import { XRaySignal } from 'src/database/schemas/xray-signal.schema';
 @ApiTags('signals')
 @Controller('signals')
 export class SignalsController {
@@ -40,5 +50,32 @@ export class SignalsController {
   @ApiResponse({ status: 200, description: 'Signal deleted' })
   remove(@Param('id') id: string) {
     return this.signalsService.delete(id);
+  }
+
+  @Post()
+  @ApiOperation({ summary: 'Create a new signal' })
+  @ApiResponse({
+    status: 201,
+    description: 'The signal has been successfully created.',
+    type: XRaySignal,
+  })
+  @ApiResponse({ status: 400, description: 'Bad request' })
+  async create(@Body() createSignalDto: CreateSignalDto) {
+    return this.signalsService.create(createSignalDto);
+  }
+
+  @Patch(':id')
+  @ApiOperation({ summary: 'Update a signal' })
+  @ApiResponse({
+    status: 200,
+    description: 'The signal has been successfully updated.',
+    type: XRaySignal,
+  })
+  @ApiResponse({ status: 404, description: 'Signal not found' })
+  async update(
+    @Param('id') id: string,
+    @Body() updateSignalDto: UpdateSignalDto,
+  ) {
+    return this.signalsService.update(id, updateSignalDto);
   }
 }

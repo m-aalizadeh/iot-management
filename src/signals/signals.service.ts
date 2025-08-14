@@ -1,8 +1,10 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { XRaySignal } from '../database/schemas/xray-signal.schema';
 import { RabbitMQService } from '../rabbitmq/rabbitmq.service';
+import { CreateSignalDto } from './dto/create-signal.dto';
+import { UpdateSignalDto } from './dto/update-signal.dto';
 
 @Injectable()
 export class SignalsService {
@@ -85,5 +87,46 @@ export class SignalsService {
         { $group: { _id: null, avgSpeed: { $avg: '$speed' } } },
       ]),
     };
+  }
+
+  async create(createSignalDto: CreateSignalDto): Promise<XRaySignal> {
+    try {
+      const createdSignal = new this.xraySignalModel({
+        ...createSignalDto,
+        timestamp: createSignalDto.timestamp || Date.now(),
+        dataLength: 1,
+        dataVolume: JSON.stringify(createSignalDto).length,
+      });
+      return await createdSignal.save();
+    } catch (error) {
+      throw new Error(`Failed to create signal: ${error.message}`);
+    }
+  }
+
+  async update(
+    id: string,
+    updateSignalDto: UpdateSignalDto,
+  ): Promise<XRaySignal> {
+    const existingSignal = await this.xraySignalModel.findById(id).exec();
+    if (!existingSignal) {
+      throw new NotFoundException(`Signal with ID ${id} not found`);
+    }
+
+    const updatedSignal = await this.xraySignalModel
+      .findByIdAndUpdate(
+        id,
+        {
+          ...updateSignalDto,
+          dataVolume: JSON.stringify({
+            ...existingSignal.toObject(),
+            ...updateSignalDto,
+          }).length,
+        },
+        { new: true },
+      )
+      .orFail(new NotFoundException(`Signal with ID ${id} not found`))
+      .exec();
+
+    return updatedSignal.toObject();
   }
 }

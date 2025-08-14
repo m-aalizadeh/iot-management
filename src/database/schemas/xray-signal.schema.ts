@@ -6,25 +6,31 @@ export class XRaySignal extends Document {
   @Prop({ required: true })
   deviceId: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, min: 0 })
   time: number;
 
   @Prop({ required: true })
   timestamp: number;
 
-  @Prop({ required: true })
+  @Prop({ required: true, min: 0 })
   dataLength: number;
 
-  @Prop({ required: true })
+  @Prop({ required: true, min: 0 })
   dataVolume: number;
 
-  @Prop({ type: Object })
+  @Prop({
+    type: {
+      x: { type: Number, required: true },
+      y: { type: Number, required: true },
+    },
+    required: true,
+  })
   coordinates: {
     x: number;
     y: number;
   };
 
-  @Prop({ required: true })
+  @Prop({ required: true, min: 0 })
   speed: number;
 }
 
