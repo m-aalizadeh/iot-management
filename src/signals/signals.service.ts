@@ -27,11 +27,9 @@ export class SignalsService {
       const deviceId = Object.keys(rawData)[0];
       const signalData = rawData[deviceId];
 
-      // Calculate data length and volume
       const dataLength = signalData.data.length;
       const dataVolume = JSON.stringify(signalData).length;
 
-      // Extract coordinates and speed from the first data point
       const firstDataPoint = signalData.data[0][1];
       const coordinates = {
         x: firstDataPoint[0],
@@ -52,7 +50,6 @@ export class SignalsService {
       await xraySignal.save();
       this.logger.log(`Processed and saved data for device ${deviceId}`);
 
-      // Send processed data to another queue if needed
       await this.rabbitMQService.publishToQueue('processed_queue', {
         deviceId,
         timestamp: xraySignal.timestamp,

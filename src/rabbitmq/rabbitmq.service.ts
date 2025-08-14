@@ -61,7 +61,6 @@ export class RabbitMQService implements OnModuleInit {
       await this.channelWrapper.sendToQueue(
         queue,
         Buffer.from(JSON.stringify(message)),
-        // { persistent: true },
       );
       this.logger.log(`Message sent to ${queue}`);
     } catch (error) {

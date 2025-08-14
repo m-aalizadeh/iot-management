@@ -7,13 +7,6 @@ export class AppService {
 
   constructor(private readonly rabbitMQService: RabbitMQService) {}
 
-  getHealthCheck(): { status: string; timestamp: number } {
-    return {
-      status: 'healthy',
-      timestamp: Date.now(),
-    };
-  }
-
   async sendTestMessage(): Promise<{ message: string }> {
     const testData = {
       'test-device-123': {

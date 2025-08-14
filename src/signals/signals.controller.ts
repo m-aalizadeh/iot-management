@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Param, Delete } from '@nestjs/common';
 import { SignalsService } from './signals.service';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
