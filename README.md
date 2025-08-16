@@ -24,17 +24,15 @@ Prerequisites
 - RabbitMQ
 
 Installation
-Clone the repository:
+Clone the repository: git clone git@github.com:m-aalizadeh/iot-management.git <br>
+cd iot-management <br>
+Install dependencies:<br>
+npm install <br>
 
-git clone git@github.com:m-aalizadeh/iot-management.git
-cd iot-management
-Install dependencies:
-npm install
+Configuration <br>
+Create a .env file in the root directory:<br>
+RABBITMQ_URL=amqp://localhost:5672<br>
+MONGODB_URI=mongodb://localhost:27017/iot-xray<br>
 
-Configuration
-Create a .env file in the root directory:
-RABBITMQ_URL=amqp://localhost:5672
-MONGODB_URI=mongodb://localhost:27017/iot-xray
-
-Running the Application
+Running the Application<br>
 npm run start:dev
