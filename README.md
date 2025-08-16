@@ -23,8 +23,8 @@ Prerequisites
 - MongoDB
 - RabbitMQ
 
-Installation
-Clone the repository: git clone git@github.com:m-aalizadeh/iot-management.git <br>
+Installation <br>
+Clone the repository: git clone https://github.com/m-aalizadeh/iot-management.git <br>
 cd iot-management <br>
 Install dependencies:<br>
 npm install <br>
